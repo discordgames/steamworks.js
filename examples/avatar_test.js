@@ -113,4 +113,5 @@ console.log('Waiting for avatar callbacks...');
 setTimeout(() => {
     avatarCallback.disconnect();
     console.log('Done!');
-}, 10000); 
+}, 10000);
+// run an action bruh
