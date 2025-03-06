@@ -68,7 +68,8 @@ pub mod callback {
 
     #[napi(ts_generic_types = "C extends keyof import('./callbacks').CallbackReturns")]
     pub fn register(
-        #[napi(ts_arg_type = "C extends keyof import('./callbacks').CallbackReturns ? C : never")] steam_callback: SteamCallback,
+        #[napi(ts_arg_type = "C extends keyof import('./callbacks').CallbackReturns ? C : never")]
+        steam_callback: SteamCallback,
         #[napi(ts_arg_type = "(value: import('./callbacks').CallbackReturns[C]) => void")] handler: JsFunction,
     ) -> Handle {
         // Create a threadsafe function
