@@ -1,12 +1,12 @@
+use napi::bindgen_prelude::*;
 use napi_derive::napi;
 use serde::Serialize;
-use napi::bindgen_prelude::*;
 
 // Define our own callback types for the ones that don't exist in steamworks-rs
 mod custom_callbacks {
+    use serde::Serialize;
     use std::os::raw::c_void;
     use steamworks::SteamId;
-    use serde::Serialize;
 
     #[derive(Serialize)]
     pub struct AvatarImageLoaded {
@@ -32,7 +32,9 @@ use custom_callbacks::*;
 #[napi]
 pub mod callback {
     use super::*;
-    use napi::threadsafe_function::{ThreadsafeFunction, ErrorStrategy, ThreadsafeFunctionCallMode};
+    use napi::threadsafe_function::{
+        ErrorStrategy, ThreadsafeFunction, ThreadsafeFunctionCallMode,
+    };
 
     #[napi]
     pub struct Handle {
