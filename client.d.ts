@@ -59,7 +59,7 @@ export declare namespace callback {
     MicroTxnAuthorizationResponse = 9,
     AvatarImageLoaded = 10
   }
-  export function register<C extends keyof import('./callbacks').CallbackReturns>(steamCallback: C, handler: (value: import('./callbacks').CallbackReturns[C]) => void): Handle
+  export function register<C extends keyof import('./callbacks').CallbackReturns>(steamCallback: C extends keyof import('./callbacks').CallbackReturns ? C : never, handler: (value: import('./callbacks').CallbackReturns[C]) => void): Handle
   export class Handle {
     disconnect(): void
   }
