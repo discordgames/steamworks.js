@@ -1,11 +1,38 @@
 use napi_derive::napi;
+use serde::Serialize;
+use napi::bindgen_prelude::*;
+
+// Define our own callback types for the ones that don't exist in steamworks-rs
+mod custom_callbacks {
+    use std::os::raw::c_void;
+    use steamworks::SteamId;
+    use serde::Serialize;
+
+    #[derive(Serialize)]
+    pub struct AvatarImageLoaded {
+        pub steam_id: SteamId,
+        pub image: i32,
+        pub width: i32,
+        pub height: i32,
+    }
+
+    unsafe impl steamworks::Callback for AvatarImageLoaded {
+        const ID: i32 = 13;
+        const SIZE: i32 = std::mem::size_of::<Self>() as i32;
+
+        unsafe fn from_raw(raw: *mut c_void) -> Self {
+            let raw = raw as *mut Self;
+            std::ptr::read(raw)
+        }
+    }
+}
+
+use custom_callbacks::*;
 
 #[napi]
 pub mod callback {
-    use napi::{
-        threadsafe_function::{ErrorStrategy, ThreadsafeFunction, ThreadsafeFunctionCallMode},
-        JsFunction,
-    };
+    use super::*;
+    use napi::threadsafe_function::{ThreadsafeFunction, ErrorStrategy, ThreadsafeFunctionCallMode};
 
     #[napi]
     pub struct Handle {
@@ -34,18 +61,20 @@ pub mod callback {
         P2PSessionConnectFail,
         GameLobbyJoinRequested,
         MicroTxnAuthorizationResponse,
+        AvatarImageLoaded,
     }
 
-    #[napi(ts_generic_types = "C extends keyof import('./callbacks').CallbackReturns")]
+    #[napi]
     pub fn register(
         #[napi(ts_arg_type = "C")] steam_callback: SteamCallback,
         #[napi(ts_arg_type = "(value: import('./callbacks').CallbackReturns[C]) => void")] handler: JsFunction,
     ) -> Handle {
-        let threadsafe_handler: ThreadsafeFunction<serde_json::Value, ErrorStrategy::Fatal> =
-            handler
-                .create_threadsafe_function(0, |ctx| Ok(vec![ctx.value]))
-                .unwrap();
+        // Create a threadsafe function
+        let threadsafe_handler = handler
+            .create_threadsafe_function(0, |ctx| Ok(vec![ctx.value]))
+            .unwrap();
 
+        // Register the callback
         let handle = match steam_callback {
             SteamCallback::PersonaStateChange => {
                 register_callback::<steamworks::PersonaStateChange>(threadsafe_handler)
@@ -76,6 +105,9 @@ pub mod callback {
             }
             SteamCallback::MicroTxnAuthorizationResponse => {
                 register_callback::<steamworks::MicroTxnAuthorizationResponse>(threadsafe_handler)
+            }
+            SteamCallback::AvatarImageLoaded => {
+                register_callback::<AvatarImageLoaded>(threadsafe_handler)
             }
         };
 

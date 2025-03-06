@@ -25,7 +25,8 @@
         "@napi-rs/cli": "2.18.4",
         "electron": "24.2.0",
         "rimraf": "6.0.1",
-        "typescript": "5.5.3"
+        "typescript": "5.5.3",
+        "sharp": "^0.33.5"
     },
     "dependencies": {
         "@types/node": "*"

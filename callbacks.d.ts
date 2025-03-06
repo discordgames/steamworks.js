@@ -53,4 +53,10 @@ export interface CallbackReturns {
         order_id: number | bigint
         authorized: boolean
     }
+    [client.callback.SteamCallback.AvatarImageLoaded]: {
+        steam_id: bigint
+        image: number
+        width: number
+        height: number
+    }
 }
