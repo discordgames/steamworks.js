@@ -60,7 +60,7 @@ jobs:
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: OS specific binaries
+                  name: linux-windows-binaries
                   path: dist
                   if-no-files-found: error
 
@@ -95,7 +95,7 @@ jobs:
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: OS specific binaries
+                  name: mac-binaries
                   path: dist
                   if-no-files-found: error
 
