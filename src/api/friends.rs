@@ -1,5 +1,6 @@
 use napi::bindgen_prelude::*;
 use napi_derive::napi;
+use std::ffi::CString;
 use steamworks::SteamId;
 
 use crate::client;
@@ -57,5 +58,17 @@ pub mod friends {
         }
 
         None
+    }
+
+    #[napi]
+    pub fn set_rich_presence(key: String, value: Option<String>) -> bool {
+        let client = client::get_client();
+        client.friends().set_rich_presence(&key, value.as_deref())
+    }
+
+    #[napi]
+    pub fn clear_rich_presence() {
+        let client = client::get_client();
+        client.friends().clear_rich_presence();
     }
 }

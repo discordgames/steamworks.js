@@ -82,6 +82,8 @@ export declare namespace friends {
   export function getSmallFriendAvatar(steamId64: bigint): Buffer | null
   export function getMediumFriendAvatar(steamId64: bigint): Buffer | null
   export function getLargeFriendAvatar(steamId64: bigint): Buffer | null
+  export function setRichPresence(key: string, value?: string | undefined | null): boolean
+  export function clearRichPresence(): void
 }
 export declare namespace input {
   export const enum InputType {
