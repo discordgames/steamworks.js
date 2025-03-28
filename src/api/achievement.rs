@@ -46,10 +46,7 @@ pub mod achievement {
     #[napi]
     pub fn get_num_achievements() -> u32 {
         let client = crate::client::get_client();
-        client
-            .user_stats()
-            .get_num_achievements()
-            .unwrap_or(0)
+        client.user_stats().get_num_achievements().unwrap_or(0)
     }
 
     #[napi]

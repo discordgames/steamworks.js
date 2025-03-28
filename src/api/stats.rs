@@ -23,7 +23,10 @@ pub mod stats {
     #[napi]
     pub fn set_float(name: String, value: f64) -> bool {
         let client = crate::client::get_client();
-        client.user_stats().set_stat_f32(&name, value as f32).is_ok()
+        client
+            .user_stats()
+            .set_stat_f32(&name, value as f32)
+            .is_ok()
     }
 
     #[napi]
