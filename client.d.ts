@@ -11,6 +11,11 @@ export declare namespace achievement {
   export function isActivated(achievement: string): boolean
   export function clear(achievement: string): boolean
   export function names(): Array<string>
+  export function getNumAchievements(): number
+  export function getAchievementPercent(achievement: string): number
+  export function getAchievementDisplayName(achievement: string): string | null
+  export function getAchievementDescription(achievement: string): string | null
+  export function getAchievementHidden(achievement: string): boolean | null
 }
 export declare namespace apps {
   export function isSubscribedApp(appId: number): boolean
@@ -221,8 +226,11 @@ export declare namespace overlay {
 export declare namespace stats {
   export function getInt(name: string): number | null
   export function setInt(name: string, value: number): boolean
+  export function getFloat(name: string): number | null
+  export function setFloat(name: string, value: number): boolean
   export function store(): boolean
   export function resetAll(achievementsToo: boolean): boolean
+  export function requestCurrentStats(): void
 }
 export declare namespace utils {
   export function getAppId(): number
